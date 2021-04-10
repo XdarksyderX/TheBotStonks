@@ -1,3 +1,4 @@
+import json
 import discord
 from discord.ext import commands
 
@@ -23,8 +24,24 @@ async def price(ctx, coin):
     
     await ctx.send(text.text)
 
+@bot.command()
+async def currency(ctx, currency):
+    url = 'http://data.fixer.io/api/latest?access_key=b1ac9c08a90023a599ef66cf07601efb&format=1'
+    response = requests.get(url).json()
+    try:
+        await ctx.send('1EUR = ' + str(response['rates'][currency]) + currency)
+    
+    except:
+        await ctx.send('Invalid currency, try again!')
 
-
+@bot.command()
+async def convert(ctx, currency, destination, quantity):
+    url = 'http://data.fixer.io/api/latest?access_key=b1ac9c08a90023a599ef66cf07601efb&format=1'
+    response = requests.get(url).json()
+    currency1Eur = float(1/response['rates'][currency])
+    destination1Eur = float(1/response['rates'][destination])
+    total = currency1Eur / destination1Eur * float(quantity)
+    await ctx.send('{}{} -> {}{}'.format(quantity, currency, round(total), destination))
 
 
 
