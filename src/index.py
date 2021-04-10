@@ -7,6 +7,8 @@ import requests
 import time
 
 bot = commands.Bot(command_prefix='<', description="El bot Stonks")
+#You must add your api key from https://fixer.io/
+currency_api_key = ''
 
 @bot.command()
 async def ping(ctx):
@@ -26,7 +28,7 @@ async def price(ctx, coin):
 
 @bot.command()
 async def currency(ctx, currency):
-    url = 'http://data.fixer.io/api/latest?access_key=b1ac9c08a90023a599ef66cf07601efb&format=1'
+    url = 'http://data.fixer.io/api/latest?access_key=' + currency_api_key + '&format=1'
     response = requests.get(url).json()
     try:
         await ctx.send('1EUR = ' + str(response['rates'][currency]) + currency)
@@ -36,7 +38,7 @@ async def currency(ctx, currency):
 
 @bot.command()
 async def convert(ctx, currency, destination, quantity):
-    url = 'http://data.fixer.io/api/latest?access_key=b1ac9c08a90023a599ef66cf07601efb&format=1'
+    url = 'http://data.fixer.io/api/latest?access_key=' + currency_api_key + '&format=1'
     response = requests.get(url).json()
     currency1Eur = float(1/response['rates'][currency])
     destination1Eur = float(1/response['rates'][destination])
